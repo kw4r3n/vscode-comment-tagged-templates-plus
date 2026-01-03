@@ -38,6 +38,7 @@ The language identifier comment must appear before the opening backtick for the 
 | xml | xml, xsd, tld, jsp, pt, cpt, dtml, rss, opml |
 | xsl | xsl, xslt |
 | yaml | yaml, yml |
+| toml | toml |
 | dosbatch | bat, batch |
 | clojure | clj, cljs, clojure |
 | coffee | coffee, Cakefile, coffee.erb |

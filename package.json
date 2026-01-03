@@ -58,6 +58,7 @@
                     "meta.embedded.block.xml": "xml",
                     "meta.embedded.block.xsl": "xsl",
                     "meta.embedded.block.yaml": "yaml",
+                    "meta.embedded.block.toml": "toml",
                     "meta.embedded.block.dosbatch": "dosbatch",
                     "meta.embedded.block.clojure": "clojure",
                     "meta.embedded.block.coffee": "coffee",
