@@ -4,6 +4,7 @@ const vscode = require('vscode');
 const { languages: builtInLanguages } = require('./build/languages');
 const { updateGrammars } = require('./build/generateGrammar');
 const { updateEmbedded } = require('./build/generateEmbedded');
+const defaultSignature = JSON.stringify(builtInLanguages);
 
 /**
  * @param {unknown} raw
@@ -81,7 +82,7 @@ function applyConfiguration() {
         : builtInLanguages;
 
     const signature = JSON.stringify(mergedLanguages);
-    const hasCustomLanguages = signature !== JSON.stringify(builtInLanguages);
+    const hasCustomLanguages = signature !== defaultSignature;
     updateGrammars(mergedLanguages);
     updateEmbedded(mergedLanguages);
     return { hasCustomLanguages, signature };
@@ -115,8 +116,8 @@ function activate(context) {
                     }
                 });
         } catch (error) {
-            console.error(error);
-            vscode.window.showErrorMessage('Failed to update custom languages for comment tagged templates.');
+            const message = error instanceof Error ? error.message : String(error);
+            vscode.window.showErrorMessage(`Failed to update custom languages for comment tagged templates: ${message}`);
         }
     };
 
