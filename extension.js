@@ -80,30 +80,44 @@ function applyConfiguration() {
         ? mergeLanguages(customLanguages)
         : builtInLanguages;
 
-    const hasCustomLanguages = JSON.stringify(mergedLanguages) !== JSON.stringify(builtInLanguages);
+    const signature = JSON.stringify(mergedLanguages);
+    const hasCustomLanguages = signature !== JSON.stringify(builtInLanguages);
     updateGrammars(mergedLanguages);
     updateEmbedded(mergedLanguages);
-    return hasCustomLanguages;
+    return { hasCustomLanguages, signature };
 }
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-    const updateAndPrompt = () => {
-        const changed = applyConfiguration();
-        if (!changed) {
-            return;
-        }
+    let signature = context.globalState.get('comment-tagged-templates.languagesSignature');
 
-        vscode.window.showInformationMessage(
-            'Comment tagged templates languages were updated. Reload to apply changes?',
-            'Reload')
-            .then(selection => {
-                if (selection === 'Reload') {
-                    vscode.commands.executeCommand('workbench.action.reloadWindow');
-                }
-            });
+    const updateAndPrompt = () => {
+        try {
+            const result = applyConfiguration();
+            const configurationChanged = result.signature !== signature;
+            if (configurationChanged) {
+                signature = result.signature;
+                context.globalState.update('comment-tagged-templates.languagesSignature', signature);
+            }
+
+            if (!result.hasCustomLanguages || !configurationChanged) {
+                return;
+            }
+
+            vscode.window.showInformationMessage(
+                'Comment tagged templates languages were updated. Reload to apply changes?',
+                'Reload')
+                .then(selection => {
+                    if (selection === 'Reload') {
+                        vscode.commands.executeCommand('workbench.action.reloadWindow');
+                    }
+                });
+        } catch (error) {
+            console.error(error);
+            vscode.window.showErrorMessage('Failed to update custom languages for comment tagged templates.');
+        }
     };
 
     updateAndPrompt();
