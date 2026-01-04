@@ -2,6 +2,7 @@
     "name": "comment-tagged-templates",
     "displayName": "Comment tagged templates",
     "description": "Syntax highlighting for tagged template strings using comments to specify language",
+    "main": "./extension.js",
     "version": "0.3.3",
     "publisher": "bierner",
     "galleryBanner": {
@@ -20,6 +21,9 @@
     "categories": [
         "Programming Languages"
     ],
+    "activationEvents": [
+        "*"
+    ],
     "keywords": [
         "javascript",
         "typescript",
@@ -28,6 +32,43 @@
         "embedded"
     ],
     "contributes": {
+        "configuration": {
+            "title": "Comment Tagged Templates",
+            "properties": {
+                "comment-tagged-templates.additionalLanguages": {
+                    "type": "array",
+                    "markdownDescription": "ユーザーが独自にテンプレート内で使用する言語を追加できます。`name`（必須）、`identifiers`（必須）、`language`、`source` を指定してください。`name` が既存のものと同じ場合は識別子を追加します。",
+                    "default": [],
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "内部的に使用する一意な名前（例: 'hcl'）"
+                            },
+                            "language": {
+                                "type": "string",
+                                "description": "VS Code の languageId。`embeddedLanguages` マッピングに使用されます。"
+                            },
+                            "identifiers": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "コメント内で指定する識別子の一覧。"
+                            },
+                            "source": {
+                                "type": [
+                                    "string",
+                                    "array"
+                                ],
+                                "description": "埋め込む TextMate scope（例: 'source.hcl'）。配列で複数指定も可能。"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "grammars": [
             {
                 "injectTo": [
