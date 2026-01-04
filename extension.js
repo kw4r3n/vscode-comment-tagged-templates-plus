@@ -131,7 +131,9 @@ function activate(context) {
     );
 }
 
-function deactivate() { }
+function deactivate() {
+    // Nothing to clean up.
+}
 
 module.exports = {
     activate,
