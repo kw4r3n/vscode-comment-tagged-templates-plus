@@ -22,7 +22,12 @@
         "Programming Languages"
     ],
     "activationEvents": [
-        "*"
+        "onLanguage:javascript",
+        "onLanguage:javascriptreact",
+        "onLanguage:typescript",
+        "onLanguage:typescriptreact",
+        "onLanguage:html",
+        "onLanguage:markdown"
     ],
     "keywords": [
         "javascript",

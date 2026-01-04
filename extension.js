@@ -4,7 +4,6 @@ const vscode = require('vscode');
 const { languages: builtInLanguages } = require('./build/languages');
 const { updateGrammars } = require('./build/generateGrammar');
 const { updateEmbedded } = require('./build/generateEmbedded');
-const defaultSignature = JSON.stringify(builtInLanguages);
 
 /**
  * @param {unknown} raw
@@ -74,6 +73,30 @@ function mergeLanguages(customLanguages) {
     return Array.from(merged.values());
 }
 
+function toArray(value) {
+    if (!value) {
+        return [];
+    }
+    return Array.isArray(value) ? value : [value];
+}
+
+function arraysEqual(a, b) {
+    if (a.length !== b.length) {
+        return false;
+    }
+    return a.every((value, index) => value === b[index]);
+}
+
+function languagesMatch(a, b) {
+    if (!b) {
+        return false;
+    }
+    return a.name === b.name
+        && a.language === b.language
+        && arraysEqual(a.identifiers, b.identifiers)
+        && arraysEqual(toArray(a.source), toArray(b.source));
+}
+
 function applyConfiguration() {
     const configuration = vscode.workspace.getConfiguration('comment-tagged-templates');
     const customLanguages = configuration.get('additionalLanguages');
@@ -82,7 +105,8 @@ function applyConfiguration() {
         : builtInLanguages;
 
     const signature = JSON.stringify(mergedLanguages);
-    const hasCustomLanguages = signature !== defaultSignature;
+    const hasCustomLanguages = mergedLanguages.length !== builtInLanguages.length
+        || mergedLanguages.some((language, index) => !languagesMatch(language, builtInLanguages[index]));
     updateGrammars(mergedLanguages);
     updateEmbedded(mergedLanguages);
     return { hasCustomLanguages, signature };
