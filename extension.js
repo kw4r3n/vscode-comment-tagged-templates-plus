@@ -28,7 +28,7 @@ function sanitizeLanguage(raw) {
         source = entry.source
             .map(value => typeof value === 'string' ? value.trim() : '')
             .filter(Boolean);
-        if (Array.isArray(source) && source.length === 0) {
+        if (source.length === 0) {
             source = undefined;
         }
     }
@@ -107,7 +107,7 @@ function activate(context) {
             }
 
             vscode.window.showInformationMessage(
-                'Comment tagged templates languages were updated. Reload to apply changes?',
+                'Comment tagged template languages were updated. Reload to apply changes?',
                 'Reload')
                 .then(selection => {
                     if (selection === 'Reload') {
