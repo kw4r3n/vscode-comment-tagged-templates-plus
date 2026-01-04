@@ -4,6 +4,7 @@ const vscode = require('vscode');
 const { languages: builtInLanguages } = require('./build/languages');
 const { updateGrammars } = require('./build/generateGrammar');
 const { updateEmbedded } = require('./build/generateEmbedded');
+const builtInLanguageMap = new Map(builtInLanguages.map(language => [language.name, language]));
 
 /**
  * @param {unknown} raw
@@ -106,7 +107,10 @@ function applyConfiguration() {
 
     const signature = JSON.stringify(mergedLanguages);
     const hasCustomLanguages = mergedLanguages.length !== builtInLanguages.length
-        || mergedLanguages.some((language, index) => !languagesMatch(language, builtInLanguages[index]));
+        || mergedLanguages.some(language => {
+            const base = builtInLanguageMap.get(language.name);
+            return !base || !languagesMatch(language, base);
+        });
     updateGrammars(mergedLanguages);
     updateEmbedded(mergedLanguages);
     return { hasCustomLanguages, signature };
@@ -116,7 +120,7 @@ function applyConfiguration() {
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-    let signature = context.globalState.get('comment-tagged-templates.languagesSignature');
+    let signature = context.globalState.get('comment-tagged-templates.languagesSignature') || '';
 
     const updateAndPrompt = () => {
         try {
