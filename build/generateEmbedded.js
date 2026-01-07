@@ -6,9 +6,9 @@ const { languages: defaultLanguages } = require('./languages');
 
 const getEmbedded = (languages = defaultLanguages) => {
     return languages.reduce((out, language) => {
-            out[`meta.embedded.block.${language.name}`] = language.language;
-            return out;
-        }, {});
+        out[`meta.embedded.block.${language.name}`] = language.language;
+        return out;
+    }, {});
 };
 
 exports.getEmbedded = getEmbedded;
