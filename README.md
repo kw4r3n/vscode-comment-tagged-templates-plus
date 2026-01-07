@@ -1,54 +1,31 @@
 # Comment Tagged Templates Plus
 
-JavaScript や TypeScript のテンプレート文字列に、コメントで言語を指定することで構文ハイライトを追加する VS Code 拡張機能です。
+[English](README_EN.md) | 日本語
 
-## 🌟 特徴
+> **⚠️ 注意**: このプロジェクトのコードの一部は AI によって生成されています。何らかの問題が生じる可能性がありますので、使用には十分ご注意ください。
 
-- **72 言語に対応**: HTML, CSS, SQL, GraphQL, Python, その他多数
-- **簡単な使用法**: `/* 言語名 */` とコメントするだけ
-- **TypeScript 完全対応**: 型安全性を保ちながら使用可能
-- **軽量**: 追加のランタイム依存なし
+自分用にカスタマイズ中  
+**このカスタマイズ版は fork 元のプロジェクトとは無関係です。**  
+問題が発生した場合は私個人に連絡してください。fork 元には報告しないでください。
 
-## 📖 使い方
+## 追加言語の設定
 
-テンプレート文字列の前にコメントで言語を指定するだけです：
+標準で 56 言語（HCL, TOML 含む）をサポートしていますが、`comment-tagged-templates.additionalLanguages` でユーザー自身がさらに言語を追加することも可能です。
 
-```javascript
-const html = /* html */ `
-  <div class="container">
-    <h1>Hello World</h1>
-  </div>
-`;
+例：Terraform の tfvars ファイルを追加する場合
 
-const styles = /* css */ `
-  .button {
-    background-color: #007bff;
-    color: white;
-  }
-`;
-
-const query = /* sql */ `
-  SELECT * FROM users WHERE active = 1
-`;
+```jsonc
+// settings.json
+{
+  "comment-tagged-templates.additionalLanguages": [
+    {
+      "name": "tfvars",
+      "language": "hcl",
+      "identifiers": ["tfvars"],
+      "source": "source.hcl"
+    }
+  ]
+}
 ```
 
-## 🚀 動作確認
-
-詳細な動作確認手順は [`動作確認.md`](./動作確認.md) または [`TESTING.md`](./TESTING.md) を参照してください。
-
-### クイックスタート
-
-1. **F5 キー**を押して拡張機能開発ウィンドウを開く
-2. `test-example.js` または `test-example.ts` を開く
-3. 構文ハイライトを確認 ✨
-
-## 🔗 リンク
-
-- **元のリポジトリ**: [mjbvz/vscode-comment-tagged-templates](https://github.com/mjbvz/vscode-comment-tagged-templates)
-- **カスタマイズ版**: 自分用にカスタマイズ中
-
-## 📝 対応言語
-
-HTML, CSS, SCSS, LESS, JavaScript, TypeScript, Python, Java, C, C++, C#, F#, Go, Rust, Scala, Ruby, PHP, Perl, Lua, Dart, JSON, YAML, SQL, GraphQL, SPARQL, EdgeQL, Cypher, Bash, PowerShell, Markdown, Dockerfile, その他多数...
-
-全リストは [`build/languages.js`](./build/languages.js) を参照。
+設定を変更した後はリロードすると反映されます。

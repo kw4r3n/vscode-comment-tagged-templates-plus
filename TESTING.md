@@ -1,231 +1,105 @@
-# 動作確認ガイド
+# カスタム言語テスト手順
 
 ## 概要
 
-この拡張機能は、JavaScript や TypeScript のテンプレート文字列にコメントタグを使用して構文ハイライトを追加します。
+HCL や TOML などのカスタム言語がシンタックスハイライトされない場合の確認手順です。
 
-## 対応言語
+## 前提条件の確認
 
-この拡張機能は以下の言語をサポートしています：
+### 1. HCL/TOML 言語拡張のインストール確認
 
-- **Web 言語**: HTML, CSS, SCSS, LESS, XML, XSL
-- **プログラミング言語**: JavaScript, TypeScript, Python, Java, C, C++, C#, F#, Go, Rust, Scala, Ruby, PHP, Perl, Lua, Dart
-- **データ言語**: JSON, YAML, SQL, GraphQL, SPARQL
-- **シェル**: Bash, PowerShell, Batch
-- **その他**: Markdown, Dockerfile, Makefile, AppleScript, Clojure, CoffeeScript, Groovy, Pug/Jade, R, GLSL, Liquid, EdgeQL, Cypher
+カスタム言語（HCL, TOML）のシンタックスハイライトを使用するには、**それぞれの言語の拡張機能がインストールされている必要があります**。
 
-全 72 言語に対応しています。
+#### 必要な拡張機能：
 
-## 動作確認方法
+- **HCL/Terraform**: `hashicorp.terraform` または `HashiCorp.HCL`
+- **TOML**: `tamasfe.even-better-toml` または `be5invis.toml`
 
-### 方法 1: VS Code の拡張機能開発モードで確認
+### 2. 設定ファイルの確認
 
-1. **VS Code でプロジェクトを開く**
+HCL と TOML は標準サポートされているため、特別な設定は不要です。
+カスタム言語を追加する場合のみ、`.vscode/settings.json` を確認してください。
 
-   ```
-   code d:\work\vscode-extensions\vscode-comment-tagged-templates-plus
-   ```
+## テスト手順
 
-2. **F5 キーを押して拡張機能開発ウィンドウを起動**
+### ステップ 1: 拡張機能のインストール確認
 
-   - または、デバッグパネルから「Launch Extension」を実行
+1. VSCode の拡張機能ビューを開く（Ctrl+Shift+X）
+2. 以下を検索してインストール：
+   - `hashicorp.terraform` (HCL 用)
+   - `tamasfe.even-better-toml` (TOML 用)
 
-3. **新しいウィンドウで`test-example.js`または`test-example.ts`を開く**
+### ステップ 2: 設定の確認
 
-   - テンプレート文字列内のコードが適切にハイライトされていることを確認
+1. `.vscode/settings.json` が作成されていることを確認
+2. 上記の `comment-tagged-templates.additionalLanguages` 設定があることを確認
 
-4. **確認項目**
-   - ✅ HTML タグが正しくハイライトされているか
-   - ✅ CSS プロパティが正しくハイライトされているか
-   - ✅ SQL キーワードが正しくハイライトされているか
-   - ✅ その他の言語も同様に確認
+### ステップ 3: 拡張機能デバッグの再起動
 
-### 方法 2: パッケージ化してインストール
+1. F5 キーを押して拡張機能デバッグを起動（すでに起動している場合は再起動）
+2. 設定変更後は「Reload」を促すメッセージが表示されるので、「Reload」をクリック
+3. Extension Development Host ウィンドウがリロードされるのを待つ
 
-1. **VSCE ツールのインストール（まだの場合）**
+### ステップ 4: テストファイルで確認
 
-   ```powershell
-   npm install -g @vscode/vsce
-   ```
+1. `test-fixture-demo.js` を開く
+2. 以下のコードブロックでシンタックスハイライトが有効になっているか確認：
+   - 行 23-28: HCL コード（`/* hcl */`）
+   - 行 32-36: TOML コード（`/* toml */`）
 
-2. **拡張機能をパッケージ化**
+## 期待される動作
 
-   ```powershell
-   vsce package
-   ```
+### 正常な場合
 
-3. **生成された.vsix ファイルをインストール**
-   - VS Code で: `Ctrl+Shift+P` → "Install from VSIX" を選択
-   - または: `code --install-extension comment-tagged-templates-0.3.3.vsix`
+- Python, SQL などの組み込み言語: ✅ ハイライトされる
+- HCL (カスタム言語): ✅ ハイライトされる（HCL 拡張がインストールされている場合）
+- TOML (カスタム言語): ✅ ハイライトされる（TOML 拡張がインストールされている場合）
 
-### 方法 3: テストファイルで手動確認
+### 異常な場合
 
-1. **`test-example.js`を開く**
-2. **以下を確認**:
-
-   ```javascript
-   // この部分は通常のJavaScriptとしてハイライト
-   const html = /* html */ `
-     <!-- ここはHTMLとしてハイライトされるはず -->
-     <div class="container">
-       <h1>Hello</h1>
-     </div>
-   `;
-   ```
-
-3. **シンタックスハイライトの動作**:
-   - コメント `/* html */` の後のテンプレート文字列が HTML 構文でハイライトされる
-   - タグ、属性、クラス名などが適切な色で表示される
-
-## 使用例
-
-### HTML
-
-\`\`\`javascript
-const template = /_ html _/ \`
-
-  <div class="app">
-    <header>
-      <h1>My App</h1>
-    </header>
-  </div>
-\`;
-\`\`\`
-
-### CSS
-
-\`\`\`javascript
-const styles = /_ css _/ \`
-.button {
-background-color: #007bff;
-color: white;
-padding: 10px 20px;
-}
-\`;
-\`\`\`
-
-### SQL
-
-\`\`\`javascript
-const query = /_ sql _/ \`
-SELECT \* FROM users
-WHERE active = 1
-ORDER BY created_at DESC
-\`;
-\`\`\`
-
-### GraphQL
-
-\`\`\`javascript
-const gql = /_ graphql _/ \`
-query GetUser($id: ID!) {
-user(id: $id) {
-name
-email
-}
-}
-\`;
-\`\`\`
-
-### TypeScript
-
-\`\`\`typescript
-const code = /_ typescript _/ \`
-interface User {
-id: number;
-name: string;
-}
-\`;
-\`\`\`
+- カスタム言語がハイライトされない → 言語拡張が未インストール
+- 設定変更が反映されない → リロードが必要
+- すべてハイライトされない → 拡張機能自体の問題
 
 ## トラブルシューティング
 
-### ハイライトが効かない場合
+### 問題 1: HCL/TOML がハイライトされない
 
-1. **VS Code を再起動**
+**原因**: 対応する言語拡張がインストールされていない
 
-   - 拡張機能の変更後は再起動が必要な場合があります
+**解決策**:
 
-2. **言語モードを確認**
+1. VSCode 拡張ビューで `hashicorp.terraform` と `tamasfe.even-better-toml` をインストール
+2. Extension Development Host を再起動
 
-   - ファイルが JavaScript/TypeScript として認識されているか確認
-   - 右下の言語モード表示をクリックして確認
+### 問題 2: 設定を追加したが反映されない
 
-3. **コメントの書き方を確認**
+**原因**: Extension Development Host がリロードされていない
 
-   - `/* html */` のようにスペースが必要
-   - `/*html*/` ではなく `/* html */` が正しい形式
+**解決策**:
 
-4. **対応する言語識別子を確認**
-   - `build/languages.js`に定義されている識別子を使用
-   - 例: `html`, `css`, `sql`, `graphql`, `python` など
+1. 開発者ツールのコンソールを確認（Help > Toggle Developer Tools）
+2. "Comment tagged template languages were updated. Reload to apply changes?" メッセージが表示されたら「Reload」をクリック
+3. 手動リロード: Ctrl+R (Extension Development Host ウィンドウ内で)
 
-## ビルドとテスト
+### 問題 3: エラーメッセージが表示される
 
-### ビルド
+**確認事項**:
 
-\`\`\`powershell
-npm run build
-\`\`\`
+1. `.vscode/settings.json` の JSON 形式が正しいか確認
+2. 各カスタム言語に必須項目（`name`, `identifiers`）があるか確認
+3. VSCode の出力パネル（View > Output）で "Comment Tagged Templates" を選択してエラーログを確認
 
-これにより以下が再生成されます：
+## デバッグ情報の確認
 
-- `syntaxes/grammar.json`: メインの文法定義
-- `syntaxes/reinject-grammar.json`: 再注入用の文法定義
+Extension Development Host の開発者ツールコンソールで、拡張機能が正しく設定を読み込んでいるか確認できます：
 
-### テスト実行
+1. Help > Toggle Developer Tools を開く（Extension Development Host 内で）
+2. Console タブを確認
+3. 拡張機能アクティベーション時のログを確認
 
-\`\`\`powershell
-npm test
-\`\`\`
+## 参考
 
-注: 現在、VS Code Test 環境の問題でテストが失敗する可能性があります。
-手動での動作確認を推奨します。
-
-## カスタマイズ
-
-新しい言語を追加するには：
-
-1. **`build/languages.js`を編集**
-
-   ```javascript
-   {
-     name: 'mylang',
-     language: 'mylang',
-     identifiers: ['mylang', 'ml'],
-     source: 'source.mylang'
-   }
-   ```
-
-2. **ビルドを実行**
-
-   ```powershell
-   npm run build
-   ```
-
-3. **`package.json`の`embeddedLanguages`セクションを更新**
-
-   ```json
-   "meta.embedded.block.mylang": "mylang"
-   ```
-
-4. **拡張機能を再起動して確認**
-
-## リファレンス
-
-- 元のリポジトリ: https://github.com/mjbvz/vscode-comment-tagged-templates
-- VS Code 拡張機能ドキュメント: https://code.visualstudio.com/api
-- TextMate 文法: https://macromates.com/manual/en/language_grammars
-
-## 動作確認チェックリスト
-
-- [ ] ビルドが成功する (`npm run build`)
-- [ ] `test-example.js`で HTML ハイライトが動作
-- [ ] `test-example.js`で CSS ハイライトが動作
-- [ ] `test-example.js`で SQL ハイライトが動作
-- [ ] `test-example.ts`で TypeScript 内でも動作
-- [ ] `test-example.ts`で GraphQL ハイライトが動作
-- [ ] F5 で拡張機能開発ウィンドウが起動
-- [ ] 新しいウィンドウで構文ハイライトが適用される
-- [ ] JSX ファイルでも動作する
-- [ ] TSX ファイルでも動作する
+- 組み込み対応言語一覧: `build/languages.js` (54 言語)
+- 設定スキーマ: `package.json` の `contributes.configuration`
+- 実装コード: `extension.js` の `mergeLanguages()` 関数

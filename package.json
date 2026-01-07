@@ -1,7 +1,8 @@
 {
-    "name": "comment-tagged-templates",
-    "displayName": "Comment tagged templates",
+    "name": "vscode-comment-tagged-templates-plus",
+    "displayName": "Comment Tagged Templates Plus",
     "description": "Syntax highlighting for tagged template strings using comments to specify language",
+    "main": "./extension.js",
     "version": "0.3.3",
     "publisher": "bierner",
     "galleryBanner": {
@@ -20,6 +21,14 @@
     "categories": [
         "Programming Languages"
     ],
+    "activationEvents": [
+        "onLanguage:javascript",
+        "onLanguage:javascriptreact",
+        "onLanguage:typescript",
+        "onLanguage:typescriptreact",
+        "onLanguage:html",
+        "onLanguage:markdown"
+    ],
     "keywords": [
         "javascript",
         "typescript",
@@ -28,6 +37,43 @@
         "embedded"
     ],
     "contributes": {
+        "configuration": {
+            "title": "Comment Tagged Templates",
+            "properties": {
+                "comment-tagged-templates.additionalLanguages": {
+                    "type": "array",
+                    "markdownDescription": "Add custom languages for comment tagged templates. Provide `name` (required), `identifiers` (required), `language`, and `source`. If `name` matches an existing entry, identifiers are appended.",
+                    "default": [],
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Unique internal name used in the grammar (e.g. 'hcl')"
+                            },
+                            "language": {
+                                "type": "string",
+                                "description": "VS Code languageId used for embeddedLanguages mapping"
+                            },
+                            "identifiers": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Identifiers used inside the comment"
+                            },
+                            "source": {
+                                "type": [
+                                    "string",
+                                    "array"
+                                ],
+                                "description": "TextMate scope to embed (e.g. 'source.hcl'). Arrays are supported."
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "grammars": [
             {
                 "injectTo": [
@@ -92,7 +138,9 @@
                     "meta.embedded.block.sparql": "sparql",
                     "meta.embedded.block.applescript": "applescript",
                     "meta.embedded.block.edgeql": "edgeql",
-                    "meta.embedded.block.cypher": "cypher"
+                    "meta.embedded.block.cypher": "cypher",
+                    "meta.embedded.block.hcl": "hcl",
+                    "meta.embedded.block.toml": "toml"
                 }
             },
             {
