@@ -10,16 +10,18 @@
 
 ## 追加言語の設定
 
-`comment-tagged-templates.additionalLanguages` でユーザー自身が識別子と言語を追加できます。
+標準で 56 言語（HCL, TOML 含む）をサポートしていますが、`comment-tagged-templates.additionalLanguages` でユーザー自身がさらに言語を追加することも可能です。
+
+例：Terraform の tfvars ファイルを追加する場合
 
 ```jsonc
 // settings.json
 {
   "comment-tagged-templates.additionalLanguages": [
     {
-      "name": "hcl",
+      "name": "tfvars",
       "language": "hcl",
-      "identifiers": ["hcl", "terraform"],
+      "identifiers": ["tfvars"],
       "source": "source.hcl"
     }
   ]

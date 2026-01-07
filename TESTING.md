@@ -17,26 +17,8 @@ HCL や TOML などのカスタム言語がシンタックスハイライトさ�
 
 ### 2. 設定ファイルの確認
 
-`.vscode/settings.json` に以下の設定が追加されていることを確認：
-
-```json
-{
-  "comment-tagged-templates.additionalLanguages": [
-    {
-      "name": "hcl",
-      "language": "hcl",
-      "identifiers": ["hcl", "terraform"],
-      "source": "source.hcl"
-    },
-    {
-      "name": "toml",
-      "language": "toml",
-      "identifiers": ["toml"],
-      "source": "source.toml"
-    }
-  ]
-}
-```
+HCL と TOML は標準サポートされているため、特別な設定は不要です。
+カスタム言語を追加する場合のみ、`.vscode/settings.json` を確認してください。
 
 ## テスト手順
 

@@ -39,23 +39,19 @@ const pythonCode = /* python */ `
 
 ## Adding Custom Languages
 
-You can add custom languages using the `comment-tagged-templates.additionalLanguages` setting in your VSCode settings.json:
+The extension comes with 56 built-in languages (including HCL and TOML), but you can add more using the `comment-tagged-templates.additionalLanguages` setting.
+
+Example: Adding support for `tfvars` files
 
 ```jsonc
 // settings.json
 {
   "comment-tagged-templates.additionalLanguages": [
     {
-      "name": "hcl",
+      "name": "tfvars",
       "language": "hcl",
-      "identifiers": ["hcl", "terraform"],
+      "identifiers": ["tfvars"],
       "source": "source.hcl"
-    },
-    {
-      "name": "toml",
-      "language": "toml",
-      "identifiers": ["toml"],
-      "source": "source.toml"
     }
   ]
 }

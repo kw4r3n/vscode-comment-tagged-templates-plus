@@ -49,30 +49,25 @@ npx vsce package
 code --install-extension comment-tagged-templates-0.3.3.vsix
 ```
 
-### ステップ 3: 設定の追加
+### ステップ 3: 設定の追加（オプション）
 
-VSCode のユーザー設定（`settings.json`）に以下を追加：
+HCL や TOML は標準でサポートされているため、**設定は不要**です。
+その他の言語を追加したい場合のみ、VSCode のユーザー設定（`settings.json`）に以下を追加してください：
 
 ```json
 {
   "comment-tagged-templates.additionalLanguages": [
     {
-      "name": "hcl",
+      "name": "tfvars",
       "language": "hcl",
-      "identifiers": ["hcl", "terraform"],
+      "identifiers": ["tfvars"],
       "source": "source.hcl"
-    },
-    {
-      "name": "toml",
-      "language": "toml",
-      "identifiers": ["toml"],
-      "source": "source.toml"
     }
   ]
 }
 ```
 
-> **注意**: HCL/TOML を使用する場合は、それぞれの言語拡張もインストールしてください：
+> **注意**: HCL/TOML を使用する場合、それぞれの言語拡張のインストールは必要です（シンタックスハイライトのため）：
 >
 > - HCL: `hashicorp.terraform`
 > - TOML: `tamasfe.even-better-toml`

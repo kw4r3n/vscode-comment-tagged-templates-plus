@@ -67,5 +67,7 @@ const languages = [
     { name: 'applescript', language: 'applescript', identifiers: ['applescript'], source: 'source.applescript' },
     { name: 'edgeql', language: 'edgeql', identifiers: ['edgeql'], source: 'source.edgeql' },
     { name: 'cypher', language: 'cypher', identifiers: ['cypher', 'cyp', 'cql'], source: 'source.cypher' },
+    { name: 'hcl', language: 'hcl', identifiers: ['hcl', 'terraform'], source: 'source.hcl' },
+    { name: 'toml', language: 'toml', identifiers: ['toml'], source: 'source.toml' },
 ];
 exports.languages = languages;
