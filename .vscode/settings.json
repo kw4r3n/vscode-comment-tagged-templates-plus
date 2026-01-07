@@ -1,0 +1,21 @@
+{
+    "comment-tagged-templates.additionalLanguages": [
+        {
+            "name": "hcl",
+            "language": "hcl",
+            "identifiers": [
+                "hcl",
+                "terraform"
+            ],
+            "source": "source.hcl"
+        },
+        {
+            "name": "toml",
+            "language": "toml",
+            "identifiers": [
+                "toml"
+            ],
+            "source": "source.toml"
+        }
+    ]
+}
